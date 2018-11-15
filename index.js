@@ -1,3 +1,6 @@
+var URL = require("url").URL;
+var settings = require("ep_etherpad-lite/node/utils/Settings");
+
 exports.registerRoute = function(hook_name, args, cb) {
   args.app.get("/auth_session", function(req, res) {
     var r =
@@ -29,6 +32,17 @@ exports.registerRoute = function(hook_name, args, cb) {
       }
 
       redirectUrl += encodeURIComponent(req.query.padName);
+
+      var urlHelper = new URL(
+        redirectUrl,
+        `${req.protocol}://${req.get("Host") || "example.org"}`
+      );
+      Object.keys(settings.padOptions).forEach(function(option) {
+        if (option in req.query) {
+          urlHelper.searchParams.set(option, req.query[option]);
+        }
+      });
+      redirectUrl += urlHelper.search;
       r += 'document.location.href="' + redirectUrl + '";' + "\n";
     }
 
