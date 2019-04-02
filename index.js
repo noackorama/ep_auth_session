@@ -42,6 +42,9 @@ exports.registerRoute = function(hook_name, args, cb) {
           urlHelper.searchParams.set(option, req.query[option]);
         }
       });
+      if ('studip' in req.query) {
+        urlHelper.searchParams.set('studip', req.query.studip)
+      }
       redirectUrl += urlHelper.search;
       r += 'document.location.href="' + redirectUrl + '";' + "\n";
     }
