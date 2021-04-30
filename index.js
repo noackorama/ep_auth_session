@@ -17,11 +17,7 @@ exports.registerRoute = function(hook_name, args, cb) {
     r += '<script type="text/javascript">' + "\n";
 
     if (req.query.sessionID) {
-      r +=
-        'document.cookie = "sessionID=' +
-        encodeURIComponent(req.query.sessionID) +
-        '; path=/;";' +
-        "\n";
+      r += 'document.cookie = "sessionID=' + encodeURIComponent(req.query.sessionID) + '; path=/; SameSite=None; Secure;";' + "\n";
     }
 
     if (req.query.padName) {
